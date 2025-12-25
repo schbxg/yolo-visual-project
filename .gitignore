@@ -1,0 +1,37 @@
+# YOLOv8/v10 Git Ignore
+
+# Models and weights
+*.pt
+*.onnx
+*.engine
+*.pb
+*.tflite
+yolo-project/models/*.pt
+
+# Training results and logs
+runs/
+yolo_training/
+logs/
+
+# Datasets (Large files)
+datasets/
+yolo-project/data/dataset/images/
+yolo-project/data/dataset/labels/
+*.zip
+*.tar.gz
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Notebooks
+.ipynb_checkpoints

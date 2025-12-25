@@ -1,0 +1,21 @@
+# YOLO Dataset Configuration
+# This is a sample dataset configuration for demonstration
+
+path: /workspace/data/dataset  # Dataset root directory
+train: images/train  # Training images path
+val: images/val      # Validation images path
+test: images/test    # Test images path (optional)
+
+# Class information
+nc: 3  # Number of classes
+names: ['person', 'car', 'dog']  # Class names
+
+# Dataset statistics (optional)
+train: 1000  # Number of training images
+val: 200     # Number of validation images
+test: 100    # Number of test images
+
+# Data augmentation settings (optional)
+# mosaic: 1.0
+# mixup: 0.0
+# copy_paste: 0.0
