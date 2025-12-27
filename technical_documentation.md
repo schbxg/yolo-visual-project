@@ -86,6 +86,8 @@ For each frame, the model returns a `Results` object containing:
   - `scripts/`: Supplemental utility scripts.
   - `live_track.py`: ByteTrack integration entry point.
   - `my_bytetrack.yaml`: Custom tracking configuration and tuning guide.
+- [x] Create `rknn_rtsp_support.md`
+: Detailed guide on handling RTSP streams.
 
 ---
 
