@@ -1,12 +1,12 @@
 # YOLOv8/v10 Git Ignore
 
 # Models and weights
-*.pt
-*.onnx
-*.engine
-*.pb
-*.tflite
-yolo-project/models/*.pt
+# *.pt
+# *.onnx
+# *.engine
+# *.pb
+# *.tflite
+# yolo-project/models/*.pt
 
 # Training results and logs
 runs/
