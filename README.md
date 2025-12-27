@@ -10,10 +10,11 @@ yolo-project/
 │   ├── dataset/         # [核心] 存放您的训练图片和标注文件
 │   └── dataset.yaml     # 数据集配置文件
 ├── models/              # 存放权重文件 (*.pt)
-├── scripts/
-│   ├── predict.py       # 命令行推理脚本
-│   └── train.py         # 模型训练脚本
-├── web_demo.py          # 交互式 Gradio Web 界面
+├── output/              # [新] 存放导出的数据 (如姿态关键点 JSON)
+├── live_pose.py         # [新] 实时姿态检测 + 关键点保存 (按 'S' 保存)
+├── live_track.py        # [新] 实时对象追踪 (ByteTrack)
+├── pose_demo.py         # 姿态检测 Web 界面
+├── web_demo.py          # 基础对象检测 Web 界面
 └── README.md            # 本说明文档
 ```
 
@@ -26,10 +27,25 @@ python yolo-project/web_demo.py
 ```
 *启动后访问: [http://127.0.0.1:7860](http://127.0.0.1:7860)*
 
-### 2. 命令行单张图片推理
+### 2. 实时姿态检测与数据捕获
+运行摄像头实时姿态估计，并支持导出数据：
 ```bash
-python yolo-project/scripts/predict.py --source bus.jpg --conf 0.5
+python live_pose.py
 ```
+- **关键点保存**: 在窗口活跃时按 **'S'** 键，将当前帧的 17 个关键点保存至 `output/keypoints/`。
+
+### 3. 实时对象追踪 (ByteTrack)
+运行高效的多目标追踪（支持瓶子、人等 80 类目标）：
+```bash
+python live_track.py
+```
+- **自定义配置**: 可通过 `my_bytetrack.yaml` 调优追踪参数。
+
+## 📚 技术文档与指南
+- [姿态检测技术文档](technical_documentation.md)
+- [RTSP 流处理深度指南](rtsp_processing_guide.md)
+- [硬件对比: NVIDIA vs Rockchip](nvidia_vs_rk_rtsp_comparison.md)
+- [Rockchip NPU 与 RKNN 兼容性说明](rknn_rtsp_support.md)
 
 ## 🎓 训练您自己的模型
 

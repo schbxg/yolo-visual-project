@@ -12,6 +12,7 @@
 runs/
 yolo_training/
 logs/
+output/
 
 # Datasets (Large files)
 datasets/

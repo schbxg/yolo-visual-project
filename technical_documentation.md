@@ -4,6 +4,7 @@
 This project implements a robust pose estimation system using the **YOLOv11** model. It provides two primary interfaces:
 - **Web Interface**: A Gradio-based interactive demo for high-quality single-frame analysis.
 - **Real-time Live Stream**: An OpenCV-based script for low-latency, real-time pose estimation.
+- **Data Capture**: Integrated "Press S to Save" functionality to export pose keypoints to JSON.
 - **Object Tracking**: Integrated ByteTrack for persistent ID tracking of people, **bottles**, and other objects.
 
 ---
@@ -27,10 +28,10 @@ This project implements a robust pose estimation system using the **YOLOv11** mo
   3. Plot results using Ultralytics `Annotator`.
   4. Display back to user.
 
-#### B. Live Detection (`live_pose.py`)
-- **Backend**: OpenCV (cv2).
-- **Imaging**: NumPy Arrays (BGR format).
-- **Optimization**: Switched from `track()` to `predict()` to minimize external dependencies (`lap` library) while maintaining high FPS for basic pose detection.
+- **Live Detection (`live_pose.py`)**: 
+    - Real-time Trackbars for Confidence/IoU.
+    - **Data Capture**: Saves **three files** per capture: JSON (keypoints), `_raw.jpg` (original frame), and `_result.jpg` (annotated frame with skeleton).
+- **Optimization**: Switched from `track()` to `predict()` to minimize external dependencies.
 
 #### C. Object Tracking (`live_track.py`)
 - **Algorithm**: ByteTrack.
@@ -86,8 +87,10 @@ For each frame, the model returns a `Results` object containing:
   - `scripts/`: Supplemental utility scripts.
   - `live_track.py`: ByteTrack integration entry point.
   - `my_bytetrack.yaml`: Custom tracking configuration and tuning guide.
-- [x] Create `rknn_rtsp_support.md`
-: Detailed guide on handling RTSP streams.
+  - `keypoints_concepts.md`: Explanation of pose estimation landmarks and standards.
+  - `rtsp_processing_guide.md`: Detailed guide on handling RTSP streams.
+  - `nvidia_vs_rk_rtsp_comparison.md`: Comparison of hardware acceleration on AI platforms.
+  - `rknn_rtsp_support.md`: Technical explanation of RKNN and standard YOLO compatibility.
 
 ---
 
