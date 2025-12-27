@@ -84,7 +84,52 @@ def start_live_pose():
         if results and len(results) > 0:
             display_frame = results[0].plot()
             
-            # Overlay Keypoint IDs if enabled
+            # 1. Fall Detection Logic
+            for r in results:
+                if r.boxes is not None and r.keypoints is not None:
+                    # Get box coordinates [x1, y1, x2, y2]
+                    boxes = r.boxes.xyxy.cpu().numpy()
+                    kpts = r.keypoints.data.cpu().numpy()
+                    
+                    for i, box in enumerate(boxes):
+                        x1, y1, x2, y2 = box
+                        w = x2 - x1
+                        h = y2 - y1
+                        aspect_ratio = w / h
+                        
+                        # Get keypoints for this person
+                        person_kpts = kpts[i] # [17, 3]
+                        
+                        # Points: 5,6 (Shoulders), 11,12 (Hips)
+                        # We check vertical distance between Average Shoulders and Average Hips
+                        try:
+                            s_y = (person_kpts[5][1] + person_kpts[6][1]) / 2
+                            h_y = (person_kpts[11][1] + person_kpts[12][1]) / 2
+                            v_dist = abs(h_y - s_y)
+                            
+                            # Fall Logic: 
+                            # - Aspect ratio > 1.2 (Wide box)
+                            # - Vertical distance between shoulders/hips is very small (< 10% of width)
+                            # - AND confidence of those points is reasonable
+                            is_horizontal = aspect_ratio > 1.2
+                            is_collapsed = v_dist < (w * 0.15)
+                            
+                            if is_horizontal or is_collapsed:
+                                # Draw prominent alert
+                                cv2.rectangle(display_frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 3)
+                                cv2.putText(display_frame, "FALL DETECTED!", (int(x1), int(y1) - 10), 
+                                            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+                                
+                                # Add background overlay for the whole screen alert
+                                overlay = display_frame.copy()
+                                cv2.rectangle(overlay, (0,0), (frame.shape[1], 50), (0,0,255), -1)
+                                cv2.addWeighted(overlay, 0.3, display_frame, 0.7, 0, display_frame)
+                                cv2.putText(display_frame, "WARNING: PERSON DOWN", (20, 35), 
+                                            cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255), 2)
+                        except IndexError:
+                            pass
+
+            # 2. Overlay Keypoint IDs if enabled
             if show_id == 1 and results[0].keypoints is not None:
                 # Get keypoints coordinates and confidence
                 kps = results[0].keypoints.xy.cpu().numpy()
