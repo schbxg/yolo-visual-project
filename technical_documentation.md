@@ -84,6 +84,16 @@ For each frame, the model returns a `Results` object containing:
 - `yolo-project/`: Root directory.
   - `models/`: Contains the `.pt` binary weights.
   - `scripts/`: Supplemental utility scripts.
-  - `pose_demo.py`: Main Gradio entry point.
-  - `live_pose.py`: Main OpenCV live entry point.
   - `live_track.py`: ByteTrack integration entry point.
+  - `my_bytetrack.yaml`: Custom tracking configuration and tuning guide.
+
+---
+
+## 6. Advanced Tracking Tuning
+If the tracker performance is not optimal, you can modify `my_bytetrack.yaml`. 
+
+### Tuning Scenarios:
+- **ID Flickering**: Decrease `track_low_thresh`.
+- **Loss of ID during hiding**: Increase `track_buffer`.
+- **IDs jumping between objects**: Decrease `match_thresh`.
+- **Seeing False/Ghost IDs**: Increase `new_track_thresh`.

@@ -82,7 +82,18 @@
   - `models/`：存放 `.pt` 模型权重文件。
   - `scripts/`：辅助工具脚本。
   - `pose_demo.py`：Gradio 交互界面主程序。
-  - `live_pose.py`：OpenCV 实时检测主程序。
   - `live_track.py`：ByteTrack 追踪集成程序。
+  - `my_bytetrack.yaml`：自定义追踪配置及调整指南。
+
+---
+
+## 6. 高级追踪调优
+如果追踪效果不理想，您可以修改 `my_bytetrack.yaml` 文件。
+
+### 常见场景调优：
+- **ID 频繁跳变 (Flickering)**：减小 `track_low_thresh`。
+- **物体被遮挡后丢失 ID**：增大 `track_buffer`。
+- **不同物体间 ID 错误交换**：减小 `match_thresh`。
+- **出现虚假/幽灵 ID**：增大 `new_track_thresh`。
   - `technical_documentation.md`：英文技术文档。
   - `technical_documentation_zh.md`：中文技术文档。

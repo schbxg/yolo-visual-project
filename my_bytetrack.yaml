@@ -1,0 +1,33 @@
+# Ultralytics YOLO ByteTrack Hyperparameters
+# ------------------------------------------------------------------------------
+# Usage: model.track(source=0, tracker='my_bytetrack.yaml')
+
+tracker_type: bytetrack  # tracker type, ['botsort', 'bytetrack']
+
+# --- Primary Thresholds ---
+track_high_thresh: 0.5   # Threshold for the first association (high confidence detections)
+track_low_thresh: 0.1    # Threshold for the second association (low confidence detections)
+new_track_thresh: 0.6    # Threshold for starting a brand new track
+match_thresh: 0.8        # IoU threshold for matching boxes between frames
+
+# --- Memory & Persistence ---
+track_buffer: 30         # How many frames to "remember" an object after it disappears
+                         # Increase this if objects are frequently hidden (occlusion)
+
+# --- Scenario-Based Tuning Guide ---
+
+# Scenario A: IDs are flickering/changing on the same object
+# -> Problem: Model confidence is dipping slightly.
+# -> Solution: Lower 'track_low_thresh' to 0.05.
+
+# Scenario B: Object goes behind something and gets a new ID when it reappears
+# -> Problem: Memory buffer is too short.
+# -> Solution: Increase 'track_buffer' to 60 or 100 frames.
+
+# Scenario C: Moving objects "swap" IDs when they pass each other
+# -> Problem: Spatial matching is too loose.
+# -> Solution: Lower 'match_thresh' to 0.6 or 0.7 to be more strict.
+
+# Scenario D: Seeing "Ghost" IDs (false detections getting tracked)
+# -> Problem: System is too eager to start new tracks.
+# -> Solution: Increase 'new_track_thresh' to 0.7 or 0.8.
