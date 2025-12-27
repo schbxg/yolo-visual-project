@@ -3,16 +3,17 @@
 ## 1. Overview
 This project implements a robust pose estimation system using the **YOLOv11** model. It provides two primary interfaces:
 - **Web Interface**: A Gradio-based interactive demo for high-quality single-frame analysis.
-- **Real-time Live Stream**: An OpenCV-based script for low-latency, real-time pose estimation with dynamic threshold controls.
+- **Real-time Live Stream**: An OpenCV-based script for low-latency, real-time pose estimation.
+- **Object Tracking**: Integrated ByteTrack for persistent ID tracking of people, **bottles**, and other objects.
 
 ---
 
 ## 2. System Architecture
 
 ### 2.1 Model Specification
-- **Model**: `yolo11n-pose.pt` (Nano version for high efficiency).
-- **Task**: Pose Estimation (Keypoint Detection).
-- **Output**: 17 human joints (keypoints) and their respective confidence scores, along with person bounding boxes.
+- **Model**: `yolo11n-pose.pt` (for pose) and `yolo11n.pt` (for object tracking).
+- **Task**: Pose Estimation & Object Detection/Tracking.
+- **Output**: 17 keypoints (pose) or bounding boxes with unique IDs (tracking).
 
 ### 2.2 Core Components
 
@@ -29,8 +30,13 @@ This project implements a robust pose estimation system using the **YOLOv11** mo
 #### B. Live Detection (`live_pose.py`)
 - **Backend**: OpenCV (cv2).
 - **Imaging**: NumPy Arrays (BGR format).
-- **Real-time Control**: OpenCV Trackbars for live parameter tuning.
-- **Optimization**: Switched from `track()` to `predict()` to minimize external dependencies (`lap` library) while maintaining high FPS.
+- **Optimization**: Switched from `track()` to `predict()` to minimize external dependencies (`lap` library) while maintaining high FPS for basic pose detection.
+
+#### C. Object Tracking (`live_track.py`)
+- **Algorithm**: ByteTrack.
+- **Feature**: Assigns unique IDs to detected objects (e.g., bottles, people), maintaining them across frames.
+- **Model**: `yolo11n.pt` (General detection).
+- **Requirement**: Requires `lapx` or `lap` package.
 
 ---
 
@@ -80,3 +86,4 @@ For each frame, the model returns a `Results` object containing:
   - `scripts/`: Supplemental utility scripts.
   - `pose_demo.py`: Main Gradio entry point.
   - `live_pose.py`: Main OpenCV live entry point.
+  - `live_track.py`: ByteTrack integration entry point.
