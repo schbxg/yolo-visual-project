@@ -84,6 +84,11 @@
   - `pose_demo.py`：Gradio 交互界面主程序。
   - `live_track.py`：ByteTrack 追踪集成程序。
   - `my_bytetrack.yaml`：自定义追踪配置及调整指南。
+  - `keypoints_concepts.md`：关键点定义与 COCO 标准详解。
+  - `image_resizing_letterbox_zh.md`：YOLO 图像缩放（Letterbox）原理详解。
+  - `rtsp_processing_guide.md`：RTSP 流处理架构指南。
+  - `nvidia_vs_rk_rtsp_comparison.md`：NVIDIA 与 Rockchip 平台对比。
+  - `rknn_rtsp_support.md`：RKNN 与标准 YOLO 兼容性说明。
 
 ---
 
@@ -95,5 +100,3 @@
 - **物体被遮挡后丢失 ID**：增大 `track_buffer`。
 - **不同物体间 ID 错误交换**：减小 `match_thresh`。
 - **出现虚假/幽灵 ID**：增大 `new_track_thresh`。
-  - `technical_documentation.md`：英文技术文档。
-  - `technical_documentation_zh.md`：中文技术文档。
