@@ -50,3 +50,13 @@ When the model detects a nose at `(320, 200)` in the **640x640** processed image
 
 ## 4. Pro Tip: Rectangular Inference
 In modern YOLO, if you are processing a batch of similar 16:9 images, the model can use "Rectangular Inference" to reduce the gray padding and speed up processing by as much as 30%. It simply processes a 640x384 "Letterbox" instead of a full 640x640 square.
+
+---
+
+## 5. Upscaling Small Images (e.g., 320x120)
+
+If your input is smaller than 640x640, YOLO performs **Upscaling**.
+
+- **No Information Loss**: Every pixel from your 320x120 image is preserved. In fact, each original pixel becomes a 2x2 or larger block in the model's view.
+- **Improved Precision**: For Pose models, upscaling a small image helps the network "see" features like eyes or fingers more clearly than if they were tiny dots.
+- **Logical Consistency**: Even with large gray bars, the geometry remains 100% correct.
