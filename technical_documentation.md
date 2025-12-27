@@ -89,6 +89,7 @@ For each frame, the model returns a `Results` object containing:
   - `my_bytetrack.yaml`: Custom tracking configuration and tuning guide.
   - `keypoints_concepts.md`: Explanation of pose estimation landmarks and standards.
   - `image_resizing_letterbox.md`: Guide on how YOLO resizes images using Letterboxing.
+  - `gpu_acceleration_guide.md`: Guide for enabling NVIDIA GPU acceleration.
   - `rtsp_processing_guide.md`: Detailed guide on handling RTSP streams.
   - `nvidia_vs_rk_rtsp_comparison.md`: Comparison of hardware acceleration on AI platforms.
   - `rknn_rtsp_support.md`: Technical explanation of RKNN and standard YOLO compatibility.

@@ -3,14 +3,19 @@ from ultralytics import YOLO
 import os
 import json
 import time
+import torch
 
 # Load the pose model
 model_path = 'd:/06-code/yolo/yolo-project/models/yolo11n-pose.pt'
+# Check for GPU availability
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+print(f"Using device: {device}")
+
 if not os.path.exists(model_path):
     print("Model not found locally, using online version...")
-    model = YOLO('yolo11n-pose.pt')
+    model = YOLO('yolo11n-pose.pt').to(device)
 else:
-    model = YOLO(model_path)
+    model = YOLO(model_path).to(device)
 
 def nothing(x):
     pass
