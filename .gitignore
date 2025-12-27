@@ -36,3 +36,7 @@ Thumbs.db
 
 # Notebooks
 .ipynb_checkpoints
+
+# MinIO
+minio.exe
+minio_data/

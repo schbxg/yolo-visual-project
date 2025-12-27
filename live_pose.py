@@ -4,6 +4,7 @@ import os
 import json
 import time
 import torch
+from minio_utils import MinioStorage
 
 # Load the pose model
 model_path = 'd:/06-code/yolo/yolo-project/models/yolo11n-pose.pt'
@@ -36,8 +37,12 @@ def start_live_pose():
     cv2.createTrackbar("IoU", window_name, 45, 100, nothing)
     cv2.createTrackbar("Auto Save", window_name, 0, 1, nothing)
     cv2.createTrackbar("Show ID", window_name, 0, 1, nothing)
-    cv2.createTrackbar("Kpt Conf", window_name, 50, 100, nothing) # New: Threshold for keypoints
+    cv2.createTrackbar("Kpt Conf", window_name, 50, 100, nothing) 
+    cv2.createTrackbar("MinIO", window_name, 0, 1, nothing) # New: Toggle MinIO upload
 
+    # Initialize MinIO Storage
+    minio_storage = MinioStorage()
+    
     # Crucial: Give the GUI time to initialize the window before reading trackbars
     cv2.waitKey(1)
 
@@ -72,9 +77,10 @@ def start_live_pose():
             auto_save = cv2.getTrackbarPos("Auto Save", window_name)
             show_id = cv2.getTrackbarPos("Show ID", window_name)
             kpt_conf_threshold = cv2.getTrackbarPos("Kpt Conf", window_name) / 100.0
+            minio_enabled = cv2.getTrackbarPos("MinIO", window_name)
         except cv2.error:
             # Fallback if window hasn't fully initialized yet
-            conf, iou, auto_save, show_id, kpt_conf_threshold = 0.25, 0.45, 0, 0, 0.5
+            conf, iou, auto_save, show_id, kpt_conf_threshold, minio_enabled = 0.25, 0.45, 0, 0, 0.5, 0
 
         # Run YOLO pose inference on the frame
         results = model.predict(
@@ -131,6 +137,22 @@ def start_live_pose():
                                 cv2.addWeighted(overlay, 0.3, display_frame, 0.7, 0, display_frame)
                                 cv2.putText(display_frame, "WARNING: PERSON DOWN", (20, 35), 
                                             cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255), 2)
+                                
+                                # Auto-upload to MinIO on Fall Detection
+                                if minio_enabled == 1:
+                                    # Create a unique alert filename
+                                    alert_ts = time.strftime("%Y%m%d-%H%M%S")
+                                    alert_ms = int((time.time() % 1) * 1000)
+                                    alert_filename = f"alert_fall_{alert_ts}_{alert_ms:03d}.jpg"
+                                    alert_path = os.path.join(save_dir, alert_filename)
+                                    
+                                    # Save temporary alert image and upload
+                                    cv2.imwrite(alert_path, display_frame)
+                                    minio_storage.upload_image(alert_path)
+                                    # We don't delete local to keep a record, 
+                                    # but we print feedback
+                                    cv2.putText(display_frame, "MINIO ALERT SENT", (20, 70), 
+                                                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
                         except IndexError:
                             pass
 
@@ -223,6 +245,14 @@ def start_live_pose():
                             # Minor blink for auto-save feedback
                             cv2.circle(display_frame, (30, 30), 10, (0, 0, 255), -1)
                             cv2.imshow(window_name, display_frame)
+
+                        # 4. Upload to MinIO if enabled
+                        if minio_enabled == 1:
+                            minio_storage.upload_json(json_path)
+                            minio_storage.upload_image(raw_path)
+                            minio_storage.upload_image(res_path)
+                            if not should_save:
+                                print(f"SUCCESS: Uploaded to MinIO")
                     except Exception as e:
                         print(f"ERROR saving data: {e}")
                 elif not should_save:
