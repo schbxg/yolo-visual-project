@@ -2,9 +2,12 @@ import cv2
 from ultralytics import YOLO
 import os
 
+# Get the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Updated to use a general detection model to support "bottle" and other objects
 # You can change this to 'yolo11n-pose.pt' for pose-only tracking
-model_path = 'd:/06-code/yolo/yolo-project/models/yolo11n.pt'
+model_path = os.path.join(SCRIPT_DIR, 'models', 'yolo11n.pt')
 if not os.path.exists(model_path):
     print("Model not found locally, using online version...")
     model = YOLO('yolo11n.pt')

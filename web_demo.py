@@ -4,8 +4,11 @@ import cv2
 import PIL.Image as Image
 import numpy as np
 
+# Get the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Load the model
-model_path = 'yolo-project/models/yolov8n.pt'
+model_path = os.path.join(SCRIPT_DIR, 'models', 'yolo11n.pt')
 model = YOLO(model_path)
 
 def predict_image(img, conf_threshold, iou_threshold):

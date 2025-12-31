@@ -11,6 +11,7 @@ yolo-project/
 │   └── dataset.yaml     # 数据集配置文件
 ├── models/              # 存放权重文件 (*.pt)
 ├── output/              # 存放导出的数据 (如姿态关键点 JSON)
+├── requirements.txt     # [新] Python 依赖列表
 ├── live_pose.py         # [增强] 实时姿态检测 + 跌倒报警 + MinIO 上传
 ├── live_track.py        # 实时对象追踪 (ByteTrack)
 ├── minio_utils.py       # [新] MinIO 对象存储集成工具
@@ -35,10 +36,22 @@ yolo-project/
 
 ## 🚀 快速开始
 
+### 0. 环境安装 (首次运行或新电脑)
+```bash
+# 克隆或拷贝项目后，安装依赖
+cd yolo-project
+pip install -r requirements.txt
+```
+
+> 💡 **GPU 加速**: 需要 CUDA 支持请安装 PyTorch GPU 版本:
+> ```bash
+> pip install torch --index-url https://download.pytorch.org/whl/cu118
+> ```
+
 ### 1. 启动交互式 Web 演示 (推荐)
 在浏览器中直接上传图片并检测：
 ```bash
-python yolo-project/web_demo.py
+python web_demo.py
 ```
 *启动后访问: [http://127.0.0.1:7860](http://127.0.0.1:7860)*
 
@@ -77,7 +90,7 @@ python live_track.py
 
 ### 步骤 2： 执行训练
 ```bash
-python yolo-project/scripts/train.py --data yolo-project/data/dataset.yaml --epochs 100
+python scripts/train.py --data data/dataset.yaml --epochs 100
 ```
 
 ## 📊 训练结果查看

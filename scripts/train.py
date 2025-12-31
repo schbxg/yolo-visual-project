@@ -31,9 +31,13 @@ def parse_args():
                         help='Number of worker threads')
     return parser.parse_args()
 
+# Get the directory where this script is located (scripts/)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.dirname(SCRIPT_DIR)  # Parent directory (yolo-project/)
+
 def setup_logging():
     """Setup logging"""
-    log_dir = '/workspace/logs'
+    log_dir = os.path.join(PROJECT_DIR, 'logs')
     os.makedirs(log_dir, exist_ok=True)
     
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')

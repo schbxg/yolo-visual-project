@@ -7,9 +7,13 @@ import argparse
 import cv2
 from ultralytics import YOLO
 
+# Get the directory where this script is located (scripts/)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.dirname(SCRIPT_DIR)  # Parent directory (yolo-project/)
+
 def parse_args():
     parser = argparse.ArgumentParser(description='YOLO Inference Script')
-    parser.add_argument('--model', type=str, default='yolo-project/models/yolov8n.pt',
+    parser.add_argument('--model', type=str, default=os.path.join(PROJECT_DIR, 'models', 'yolo11n.pt'),
                         help='Path to model file or model name')
     parser.add_argument('--source', type=str, required=True,
                         help='Input source: image file, video file, or webcam index')

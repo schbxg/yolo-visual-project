@@ -6,8 +6,11 @@ import time
 import torch
 from minio_utils import MinioStorage
 
+# Get the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Load the pose model
-model_path = 'd:/06-code/yolo/yolo-project/models/yolo11n-pose.pt'
+model_path = os.path.join(SCRIPT_DIR, 'models', 'yolo11n-pose.pt')
 # Check for GPU availability
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using device: {device}")
@@ -47,7 +50,7 @@ def start_live_pose():
     cv2.waitKey(1)
 
     # Create output directory for saved data
-    save_dir = "d:/06-code/yolo/yolo-project/output/keypoints"
+    save_dir = os.path.join(SCRIPT_DIR, 'output', 'keypoints')
     os.makedirs(save_dir, exist_ok=True)
 
     print("Controls:")

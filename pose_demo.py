@@ -5,8 +5,11 @@ import os
 import cv2
 import numpy as np
 
+# Get the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Load the pose model
-model_path = 'd:/06-code/yolo/yolo-project/models/yolo11n-pose.pt'
+model_path = os.path.join(SCRIPT_DIR, 'models', 'yolo11n-pose.pt')
 if not os.path.exists(model_path):
     print(f"Model not found at {model_path}, downloading...")
     model = YOLO('yolo11n-pose.pt')
