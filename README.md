@@ -77,7 +77,8 @@ python live_track.py
 
 ## 📚 技术文档与指南
 - [姿态检测技术文档](technical_documentation.md)
-- [MinIO 集成与部署手册](walkthrough.md)
+- [MinIO RESTful API 访问指南](minio_restful_api_guide.md) ⭐ NEW
+- [MinIO 集成与部署手册](minio_usage_guide_zh.md)
 - [RTSP 流处理深度指南](rtsp_processing_guide.md)
 - [硬件对比: NVIDIA vs Rockchip](nvidia_vs_rk_rtsp_comparison.md)
 
